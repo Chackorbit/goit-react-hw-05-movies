@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Modal from '../Modal/Modal';
 
 import {
@@ -13,6 +14,7 @@ export default function HomePage() {
   const [imgBaseUrl, setImgBaseUrl] = useState(
     'https://image.tmdb.org/t/p/w300'
   );
+
   const [showModal, setShowModal] = useState(false);
   const [modalFilm, setModalFilm] = useState([]);
 
@@ -62,9 +64,11 @@ export default function HomePage() {
         {movies.map(movie => {
           return (
             <FilmsItem key={movie.id} id={movie.id} onClick={openModal}>
-              <img src={imgBaseUrl + movie.poster_path} alt=""></img>
-              <FilmTitle>{movie.name ?? movie.title} </FilmTitle>
-              <p>{movie.overview}</p>
+              <Link to={`movies/${movie.id}`}>
+                <img src={imgBaseUrl + movie.poster_path} alt=""></img>
+                <FilmTitle>{movie.name ?? movie.title} </FilmTitle>
+                <p>{movie.overview}</p>
+              </Link>
             </FilmsItem>
           );
         })}
