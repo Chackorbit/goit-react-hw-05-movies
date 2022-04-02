@@ -1,6 +1,7 @@
 import { useParams, NavLink, Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Cast from 'components/Cast/Cast';
+import Reviews from 'components/Reviews/Reviews';
 
 export default function MovieDetailsPage(props) {
   // const match = useRoutes();
@@ -21,7 +22,7 @@ export default function MovieDetailsPage(props) {
       });
       // console.log(movieId);
 
-      const url = `${BASE_URL}movie/${movieId}?${meta}&append_to_response=credits`;
+      const url = `${BASE_URL}movie/${movieId}?${meta}&append_to_response=credits,reviews`;
 
       const fetchMovie = await fetch(url);
       const r = await fetchMovie.json();
@@ -43,10 +44,15 @@ export default function MovieDetailsPage(props) {
       <p>{detailsFilm.overview}</p>
       <p>Дата выхода: {detailsFilm.release_date}</p>
       <br />
-      <NavLink to="cast">Актеры</NavLink>
+      <NavLink to="cast">Cast </NavLink>
+      <NavLink to="reviews">Reviews</NavLink>
       <br />
       <Routes>
         <Route path="cast" element={<Cast credits={detailsFilm.credits} />} />
+        <Route
+          path="reviews"
+          element={<Reviews reviews={detailsFilm.reviews} />}
+        />
       </Routes>
       <p>...</p>
 

@@ -1,8 +1,8 @@
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import DefaultPhoto from 'img/instagram-g6f508c30b_640.png';
 
 export default function Cast({ credits }) {
-  const { movieId } = useParams();
+  //   const { movieId } = useParams();
   const actorPhoto = 'https://image.tmdb.org/t/p/w200';
 
   return (
@@ -19,7 +19,6 @@ export default function Cast({ credits }) {
           credits.cast.map(actor => {
             return (
               <li key={actor.id}>
-                {console.log(actor)}
                 {actor.profile_path ? (
                   <img src={actorPhoto + actor.profile_path} alt="" />
                 ) : (
