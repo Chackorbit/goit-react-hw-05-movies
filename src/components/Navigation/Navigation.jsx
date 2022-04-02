@@ -7,7 +7,7 @@ const Navigation = () => {
 
       <NavLink to="/movies">Search Films</NavLink>
 
-      <NavLink to="/movies/:movieId"></NavLink>
+      {/* <NavLink to="/movies/:movieId"></NavLink> */}
 
       {/* <NavLink to="/movies/:movieId/cast"></NavLink> */}
 

@@ -63,13 +63,13 @@ export default function HomePage() {
       <FilmsList>
         {movies.map(movie => {
           return (
-            <FilmsItem key={movie.id} id={movie.id} onClick={openModal}>
-              <Link to={`movies/${movie.id}`}>
+            <Link to={`movies/${movie.id}`} key={movie.id}>
+              <FilmsItem id={movie.id} onClick={openModal}>
                 <img src={imgBaseUrl + movie.poster_path} alt=""></img>
                 <FilmTitle>{movie.name ?? movie.title} </FilmTitle>
                 <p>{movie.overview}</p>
-              </Link>
-            </FilmsItem>
+              </FilmsItem>
+            </Link>
           );
         })}
       </FilmsList>

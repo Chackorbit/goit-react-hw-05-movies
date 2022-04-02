@@ -1,7 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useParams, NavLink, Route, Routes } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import Cast from 'components/Cast/Cast';
 
-export default function MovieDetailsPage() {
+export default function MovieDetailsPage(props) {
+  // const match = useRoutes();
+  // console.log(match);
   const { movieId } = useParams();
   const [detailsFilm, setDetailsFilm] = useState([]);
   const [imgBaseUrl, setImgBaseUrl] = useState(
@@ -16,9 +19,9 @@ export default function MovieDetailsPage() {
       const meta = new URLSearchParams({
         api_key: key,
       });
-      console.log(movieId);
+      // console.log(movieId);
 
-      const url = `${BASE_URL}movie/${movieId}?${meta}`;
+      const url = `${BASE_URL}movie/${movieId}?${meta}&append_to_response=credits`;
 
       const fetchMovie = await fetch(url);
       const r = await fetchMovie.json();
@@ -28,6 +31,7 @@ export default function MovieDetailsPage() {
     fetchDetailsMovie();
   }, [movieId]);
 
+  // console.log(window.location.pathname);
   return (
     <div>
       <img src={imgBaseUrl + detailsFilm.poster_path} alt="" />
@@ -38,6 +42,17 @@ export default function MovieDetailsPage() {
 
       <p>{detailsFilm.overview}</p>
       <p>Дата выхода: {detailsFilm.release_date}</p>
+      <br />
+      <NavLink to="cast">Актеры</NavLink>
+      <br />
+      <Routes>
+        <Route path="cast" element={<Cast credits={detailsFilm.credits} />} />
+      </Routes>
+      <p>...</p>
+
+      {/* <p>Актеры: </p> */}
+      {/* {detailsFilm.credits && detailsFilm.credits.cast.map(actor => <li></li>)} */}
+      {/* <Cast /> */}
     </div>
   );
 }

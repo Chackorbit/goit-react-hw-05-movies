@@ -14,7 +14,7 @@ import '../index.css';
 // /movies/get-movie-credits
 // /movies/get-movie-reviews
 
-export default function App() {
+const App = () => {
   return (
     <div>
       <AppBar />
@@ -23,19 +23,19 @@ export default function App() {
       <Routes>
         <Route exact path="/" element={<HomePage />} />
 
-        <Route exact path="/movies" element={<MoviePage />} />
+        <Route exact path="/movies" element={<MoviePage />}></Route>
 
-        <Route path="/movies/:movieId" element={<MovieDetailsPage />} />
+        <Route exact path="/movies/:movieId" element={<MovieDetailsPage />}>
+          <Route path="cast" element={<Cast />} />
+        </Route>
+        {/* <Route path="/movies/:movieId/cast" element={<Cast />} /> */}
 
-        {/* <Route path="/movies/:movieId/cast" exact>
-          <Cast />
-        </Route> */}
-
-        {/* <Route path="/movies/:movieId/reviews" exact>
+        {/* <Route exact path="/movies/:movieId/reviews" >
           <Reviews />
         </Route> */}
       </Routes>
       {/* </Switch> */}
     </div>
   );
-}
+};
+export default App;
