@@ -10,30 +10,7 @@ import {
 
 export default function HomePage() {
   const [movies, setMovies] = useState([]);
-  const [imgBaseUrl, setImgBaseUrl] = useState(
-    'https://image.tmdb.org/t/p/w300'
-  );
-
-  // const [showModal, setShowModal] = useState(false);
-  // const [modalFilm, setModalFilm] = useState([]);
-
-  // const openModal = e => {
-  //   setShowModal(true);
-  //   // console.log(e.target);
-  //   // console.log(e.currentTarget);
-
-  //   if (e.currentTarget.id) {
-  //     // eslint-disable-next-line eqeqeq
-  //     const currentFilmPage = movies.find(el => el.id == e.currentTarget.id);
-  //     // console.log(currentFilmPage);
-  //     setModalFilm(currentFilmPage);
-  //   }
-  // };
-
-  // const closeModal = () => {
-  //   setShowModal(false);
-  //   setModalFilm([]);
-  // };
+  const imgBaseUrl = 'https://image.tmdb.org/t/p/w300';
 
   const getMovies = async () => {
     const BASE_URL = 'https://api.themoviedb.org/3/';
@@ -55,8 +32,6 @@ export default function HomePage() {
     getMovies();
   }, []);
 
-  //   getMovies();
-
   return (
     <FilmContainer>
       <FilmsList>
@@ -72,15 +47,6 @@ export default function HomePage() {
           );
         })}
       </FilmsList>
-
-      {/* {showModal && (
-        <Modal onClose={closeModal}>
-          <div>
-            <img src={imgBaseUrl + modalFilm.poster_path} alt="" />
-            <FilmTitle>{}</FilmTitle>
-          </div>
-        </Modal>
-      )} */}
     </FilmContainer>
   );
 }

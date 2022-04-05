@@ -1,8 +1,6 @@
-// import { useParams } from 'react-router-dom';
 import DefaultPhoto from 'img/instagram-g6f508c30b_640.png';
 
 export default function Cast({ credits }) {
-  //   const { movieId } = useParams();
   const actorPhoto = 'https://image.tmdb.org/t/p/w200';
 
   return (

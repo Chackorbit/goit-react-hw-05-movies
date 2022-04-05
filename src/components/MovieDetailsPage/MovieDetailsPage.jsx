@@ -2,7 +2,6 @@ import { useParams, NavLink, Route, Routes } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import Cast from 'components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
-// import { Suspense } from 'react-is';
 
 export default function MovieDetailsPage(props) {
   const { movieId } = useParams();

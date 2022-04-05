@@ -1,9 +1,9 @@
 // import { useParams } from 'react-router-dom';
-import DefaultPhoto from 'img/instagram-g6f508c30b_640.png';
+// import DefaultPhoto from 'img/instagram-g6f508c30b_640.png';
 
-export default function Cast({ reviews }) {
+export default function Reviews({ reviews }) {
   //   const { movieId } = useParams();
-  const actorPhoto = 'https://image.tmdb.org/t/p/w200';
+  // const actorPhoto = 'https://image.tmdb.org/t/p/w200';
 
   return (
     <>
