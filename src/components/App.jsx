@@ -2,12 +2,7 @@
 import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import AppBar from './AppBar/AppBar';
-// import Loader from './Loader/Loader';
-// import HomePage from './HomePage/HomePage';
-// import MoviePage from './MoviesPage/MoviePage';
-// import MovieDetailsPage from './MovieDetailsPage/MovieDetailsPage';
-// import Cast from './Cast/Cast';
-// import Reviews from './Reviews/Reviews';
+
 import '../index.css';
 import { Suspense } from 'react-is';
 
@@ -18,12 +13,6 @@ const MovieDetailsPage = lazy(() =>
 );
 const Cast = lazy(() => import('./Cast/Cast'));
 const Reviews = lazy(() => import('./Reviews/Reviews'));
-
-// /trending/get-trending
-// /search/search-movies
-// /movies/get-movie-details
-// /movies/get-movie-credits
-// /movies/get-movie-reviews
 
 const App = () => {
   return (
@@ -45,4 +34,5 @@ const App = () => {
     </div>
   );
 };
+
 export default App;

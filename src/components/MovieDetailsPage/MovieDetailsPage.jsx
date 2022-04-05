@@ -1,11 +1,10 @@
 import { useParams, NavLink, Route, Routes } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Cast from 'components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
+// import { Suspense } from 'react-is';
 
 export default function MovieDetailsPage(props) {
-  // const match = useRoutes();
-  // console.log(match);
   const { movieId } = useParams();
   const [detailsFilm, setDetailsFilm] = useState([]);
   // eslint-disable-next-line no-unused-vars
@@ -47,18 +46,17 @@ export default function MovieDetailsPage(props) {
       <NavLink to="cast">Cast </NavLink>
       <NavLink to="reviews">Reviews</NavLink>
       <br />
-      <Routes>
-        <Route path="cast" element={<Cast credits={detailsFilm.credits} />} />
-        <Route
-          path="reviews"
-          element={<Reviews reviews={detailsFilm.reviews} />}
-        />
-      </Routes>
-      <p>...</p>
 
-      {/* <p>Актеры: </p> */}
-      {/* {detailsFilm.credits && detailsFilm.credits.cast.map(actor => <li></li>)} */}
-      {/* <Cast /> */}
+      <Suspense fallback={<h1>LOADING...</h1>}>
+        <Routes>
+          <Route path="cast" element={<Cast credits={detailsFilm.credits} />} />
+          <Route
+            path="reviews"
+            element={<Reviews reviews={detailsFilm.reviews} />}
+          />
+        </Routes>
+      </Suspense>
+      <p>...</p>
     </div>
   );
 }
