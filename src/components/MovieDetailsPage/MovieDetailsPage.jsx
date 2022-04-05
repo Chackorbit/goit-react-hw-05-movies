@@ -8,6 +8,7 @@ export default function MovieDetailsPage(props) {
   // console.log(match);
   const { movieId } = useParams();
   const [detailsFilm, setDetailsFilm] = useState([]);
+  // eslint-disable-next-line no-unused-vars
   const [imgBaseUrl, setImgBaseUrl] = useState(
     'https://image.tmdb.org/t/p/w500'
   );
@@ -32,7 +33,6 @@ export default function MovieDetailsPage(props) {
     fetchDetailsMovie();
   }, [movieId]);
 
-  // console.log(window.location.pathname);
   return (
     <div>
       <img src={imgBaseUrl + detailsFilm.poster_path} alt="" />

@@ -1,10 +1,10 @@
 import Navigation from '../Navigation/Navigation';
-// import s from './AppBar.module.css';
+import { Header } from './AppBar.styled';
 
 export default function AppBar() {
   return (
-    <header>
+    <Header>
       <Navigation />
-    </header>
+    </Header>
   );
 }
