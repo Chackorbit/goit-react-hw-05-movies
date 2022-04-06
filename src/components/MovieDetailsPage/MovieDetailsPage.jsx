@@ -25,7 +25,12 @@ export default function MovieDetailsPage(props) {
 
       const fetchMovie = await fetch(url);
       const r = await fetchMovie.json();
-      console.log(r);
+      // console.log(r);
+      // console.log(fetchMovie);
+      // if (fetchMovie.status === 404) {
+      //   console.log('Film not found');
+      // }
+
       return setDetailsFilm(r);
     };
     fetchDetailsMovie();
