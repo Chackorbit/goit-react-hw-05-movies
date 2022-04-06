@@ -7,7 +7,7 @@ const Navigation = () => {
     <Nav>
       <NavLink
         className={navData => (navData.isActive ? s.linkActiv : s.link)}
-        to="/"
+        to="/goit-react-hw-05-movies"
       >
         Главная
       </NavLink>
