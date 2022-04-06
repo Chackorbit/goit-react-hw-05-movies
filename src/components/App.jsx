@@ -20,7 +20,7 @@ const App = () => {
 
       <Suspense fallback={<h1>LOADING...</h1>}>
         <Routes>
-          <Route exact path="/goit-react-hw-05-movies" element={<HomePage />} />
+          <Route exact path="/" element={<HomePage />} />
 
           <Route exact path="/movies" element={<MoviePage />}></Route>
 
