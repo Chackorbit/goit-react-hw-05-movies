@@ -2,6 +2,7 @@ import { useParams, NavLink, Route, Routes } from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import Cast from 'components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
+import GoBackBtn from '../GoBackBtn/GoBackBtn';
 
 export default function MovieDetailsPage(props) {
   const { movieId } = useParams();
@@ -19,7 +20,6 @@ export default function MovieDetailsPage(props) {
       const meta = new URLSearchParams({
         api_key: key,
       });
-      // console.log(movieId);
 
       const url = `${BASE_URL}movie/${movieId}?${meta}&append_to_response=credits,reviews`;
 
@@ -37,30 +37,36 @@ export default function MovieDetailsPage(props) {
   }, [movieId]);
 
   return (
-    <div>
-      <img src={imgBaseUrl + detailsFilm.poster_path} alt="" />
-      <h1>{detailsFilm.title || detailsFilm.name}</h1>
-      {detailsFilm.genres && (
-        <p>Жанры: {detailsFilm.genres.map(genre => genre.name + ', ')} </p>
-      )}
+    <>
+      <GoBackBtn></GoBackBtn>
+      <div>
+        <img src={imgBaseUrl + detailsFilm.poster_path} alt="" />
+        <h1>{detailsFilm.title || detailsFilm.name}</h1>
+        {detailsFilm.genres && (
+          <p>Жанры: {detailsFilm.genres.map(genre => genre.name + ', ')} </p>
+        )}
 
-      <p>{detailsFilm.overview}</p>
-      <p>Дата выхода: {detailsFilm.release_date}</p>
-      <br />
-      <NavLink to="cast">Cast </NavLink>
-      <NavLink to="reviews">Reviews</NavLink>
-      <br />
+        <p>{detailsFilm.overview}</p>
+        <p>Дата выхода: {detailsFilm.release_date}</p>
+        <br />
+        <NavLink to="cast">Cast </NavLink>
+        <NavLink to="reviews">Reviews</NavLink>
+        <br />
 
-      <Suspense fallback={<h1>LOADING...</h1>}>
-        <Routes>
-          <Route path="cast" element={<Cast credits={detailsFilm.credits} />} />
-          <Route
-            path="reviews"
-            element={<Reviews reviews={detailsFilm.reviews} />}
-          />
-        </Routes>
-      </Suspense>
-      <p>...</p>
-    </div>
+        <Suspense fallback={<h1>LOADING...</h1>}>
+          <Routes>
+            <Route
+              path="cast"
+              element={<Cast credits={detailsFilm.credits} />}
+            />
+            <Route
+              path="reviews"
+              element={<Reviews reviews={detailsFilm.reviews} />}
+            />
+          </Routes>
+        </Suspense>
+        <p>...</p>
+      </div>
+    </>
   );
 }

@@ -25,13 +25,17 @@ export default function HomePage() {
     const fetchPopularMovie = await fetch(url);
     const r = await fetchPopularMovie.json();
     console.log(r.results);
+
     return setMovies(r.results);
   };
 
   useEffect(() => {
     getMovies();
   }, []);
-
+  // movies.find(film => {
+  //   console.log(film.id === 92749);
+  //   // return film.id != 92749;
+  // });
   return (
     <FilmContainer>
       <FilmsList>

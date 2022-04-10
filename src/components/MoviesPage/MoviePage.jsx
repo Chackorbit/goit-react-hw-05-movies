@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import {
   FilmContainer,
   FilmsItem,
@@ -12,18 +12,33 @@ import Poster from 'img/instagram-g6f508c30b_640.png';
 import { FcSearch } from 'react-icons/fc';
 
 export default function MoviePage() {
-  const [query, setQuery] = useState('');
+  // const [query, setQuery] = useState('');
   const [foundMovie, setFoundMovie] = useState({});
   const imgBaseUrl = 'https://image.tmdb.org/t/p/w300';
+
+  // const { pathname, search } = useLocation();
+  let [searchParams, setSearchParams] = useSearchParams();
+
+  // console.log(searchParams.get('query' || ''));
 
   const searchMovie = e => {
     e.preventDefault();
 
-    searchQueryMovie();
+    if (searchParams.get('query' || '') !== null) {
+      searchQueryMovie();
+    }
+    // setSearchParams(`query=${query}`);
   };
 
   const saveQuery = e => {
-    setQuery(e.target.value);
+    // setQuery(e.target.value);
+
+    let query = e.target.value;
+    if (query) {
+      setSearchParams({ query });
+    } else {
+      setSearchParams({});
+    }
   };
 
   const searchQueryMovie = async () => {
@@ -32,7 +47,7 @@ export default function MoviePage() {
 
     const meta = new URLSearchParams({
       api_key: key,
-      query: query,
+      query: searchParams.get('query' || ''),
       page: 1,
       include_adult: false,
     });
@@ -41,9 +56,15 @@ export default function MoviePage() {
 
     const fetchQueryMovie = await fetch(url);
     const r = await fetchQueryMovie.json();
-    console.log(r);
+    // console.log(r);
     return setFoundMovie(r);
   };
+  useEffect(() => {
+    if (searchParams.get('query' || '') !== null) {
+      searchQueryMovie();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div>
@@ -54,7 +75,8 @@ export default function MoviePage() {
         </button>
 
         <input
-          onInput={saveQuery}
+          value={searchParams.get('query' || '')}
+          onChange={saveQuery}
           className={s.SearchForm_input}
           type="text"
           autoComplete="off"
@@ -67,8 +89,8 @@ export default function MoviePage() {
         <FilmsList>
           {foundMovie.results &&
             foundMovie.results.map(movie => {
-              console.log(movie);
               return (
+                // <Route path={pathname + search}>
                 <Link to={`${movie.id}`} key={movie.id}>
                   <FilmsItem id={movie.id}>
                     {movie.poster_path ? (
@@ -80,6 +102,7 @@ export default function MoviePage() {
                     <p>{movie.overview}</p>
                   </FilmsItem>
                 </Link>
+                ///* </Route> */
               );
             })}
         </FilmsList>
