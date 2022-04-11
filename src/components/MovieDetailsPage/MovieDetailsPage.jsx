@@ -1,4 +1,10 @@
-import { useParams, NavLink, Route, Routes } from 'react-router-dom';
+import {
+  useParams,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+} from 'react-router-dom';
 import { useState, useEffect, Suspense } from 'react';
 import Cast from 'components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
@@ -7,10 +13,9 @@ import GoBackBtn from '../GoBackBtn/GoBackBtn';
 export default function MovieDetailsPage(props) {
   const { movieId } = useParams();
   const [detailsFilm, setDetailsFilm] = useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [imgBaseUrl, setImgBaseUrl] = useState(
-    'https://image.tmdb.org/t/p/w500'
-  );
+
+  const imgBaseUrl = 'https://image.tmdb.org/t/p/w500';
+  const location = useLocation();
 
   useEffect(() => {
     const fetchDetailsMovie = async () => {
@@ -25,11 +30,6 @@ export default function MovieDetailsPage(props) {
 
       const fetchMovie = await fetch(url);
       const r = await fetchMovie.json();
-      // console.log(r);
-      // console.log(fetchMovie);
-      // if (fetchMovie.status === 404) {
-      //   console.log('Film not found');
-      // }
 
       return setDetailsFilm(r);
     };
@@ -38,7 +38,7 @@ export default function MovieDetailsPage(props) {
 
   return (
     <>
-      <GoBackBtn></GoBackBtn>
+      <GoBackBtn location={location}></GoBackBtn>
       <div>
         <img src={imgBaseUrl + detailsFilm.poster_path} alt="" />
         <h1>{detailsFilm.title || detailsFilm.name}</h1>
@@ -49,8 +49,12 @@ export default function MovieDetailsPage(props) {
         <p>{detailsFilm.overview}</p>
         <p>Дата выхода: {detailsFilm.release_date}</p>
         <br />
-        <NavLink to="cast">Cast </NavLink>
-        <NavLink to="reviews">Reviews</NavLink>
+        <NavLink to="cast" state={{ from: location?.state?.from ?? '/' }}>
+          Cast{' '}
+        </NavLink>
+        <NavLink to="reviews" state={{ from: location?.state?.from ?? '/' }}>
+          Reviews
+        </NavLink>
         <br />
 
         <Suspense fallback={<h1>LOADING...</h1>}>

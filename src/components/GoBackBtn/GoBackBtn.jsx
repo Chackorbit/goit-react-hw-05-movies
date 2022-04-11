@@ -1,22 +1,19 @@
-// import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-const GoBackBtn = () => {
-  //   let [params] = useSearchParams();
-  //   const history = useHistory();
-  //   const location = useLocation();
+const GoBackBtn = ({ location }) => {
+  let navigate = useNavigate();
 
-  //   console.log(params);
-
-  //   const onGoBack = qwery => {
-  //     // history.push({
-  //     //   ...location,
-  //     //   search: `qwery=${qwery}`,
-  //     // });
-  //   };
-
+  // console.log(location);
   return (
     <>
-      <button>Go back</button>
+      <button
+        type="button"
+        onClick={() => {
+          navigate(location?.state?.from ?? '/');
+        }}
+      >
+        Go back
+      </button>
     </>
   );
 };

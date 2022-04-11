@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import {
   FilmContainer,
   FilmsItem,
@@ -12,42 +12,56 @@ import Poster from 'img/instagram-g6f508c30b_640.png';
 import { FcSearch } from 'react-icons/fc';
 
 export default function MoviePage() {
-  // const [query, setQuery] = useState('');
-  const [foundMovie, setFoundMovie] = useState({});
+  // eslint-disable-next-line no-unused-vars
+  const [query, setQuery] = useState('');
+  const [foundMovie, setFoundMovie] = useState([]);
+  let [searchParams, setSearchParams] = useSearchParams();
+  // const location = useLocation();
+  const location = useLocation();
+
   const imgBaseUrl = 'https://image.tmdb.org/t/p/w300';
 
-  // const { pathname, search } = useLocation();
-  let [searchParams, setSearchParams] = useSearchParams();
+  // useEffect(() => {
+  //   const searchQuery = searchParams.get('query');
+  //   if (!searchQuery || searchQuery === '') return;
 
-  // console.log(searchParams.get('query' || ''));
+  //   const searchQueryMovie = async () => {
+  //     const BASE_URL = 'https://api.themoviedb.org/3/';
+  //     const key = '39268a7cf0f5a62bddedb30e59a8c087';
 
-  const searchMovie = e => {
-    e.preventDefault();
+  //     const query = new URLSearchParams(location.search).get('query') ?? '';
 
-    if (searchParams.get('query' || '') !== null) {
-      searchQueryMovie();
-    }
-    // setSearchParams(`query=${query}`);
-  };
+  //     const meta = new URLSearchParams({
+  //       api_key: key,
+  //       query,
+  //       page: 1,
+  //       include_adult: false,
+  //     });
 
-  const saveQuery = e => {
-    // setQuery(e.target.value);
+  //     const url = `${BASE_URL}search/movie?${meta}`;
 
-    let query = e.target.value;
-    if (query) {
-      setSearchParams({ query });
-    } else {
-      setSearchParams({});
-    }
-  };
+  //     const fetchQueryMovie = await fetch(url);
+  //     const r = await fetchQueryMovie.json();
+
+  //     return setFoundMovie(r);
+  //   };
+
+  //   searchQueryMovie();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [query, searchParams, setSearchParams]);
 
   const searchQueryMovie = async () => {
     const BASE_URL = 'https://api.themoviedb.org/3/';
     const key = '39268a7cf0f5a62bddedb30e59a8c087';
 
+    const searchQuery = searchParams.get('query');
+    if (!searchQuery || searchQuery === '') return;
+
+    const query = new URLSearchParams(location.search).get('query') ?? '';
+
     const meta = new URLSearchParams({
       api_key: key,
-      query: searchParams.get('query' || ''),
+      query,
       page: 1,
       include_adult: false,
     });
@@ -56,11 +70,27 @@ export default function MoviePage() {
 
     const fetchQueryMovie = await fetch(url);
     const r = await fetchQueryMovie.json();
-    // console.log(r);
+
     return setFoundMovie(r);
   };
+
+  const saveQuery = e => {
+    setQuery(e.target.value);
+    if (e.target.value === '') {
+      setSearchParams({});
+      return;
+    }
+    setSearchParams({ query: e.target.value });
+  };
+
+  const onSubmit = e => {
+    e.preventDefault();
+
+    searchQueryMovie();
+  };
+
   useEffect(() => {
-    if (searchParams.get('query' || '') !== null) {
+    if (searchParams.get('query') != null) {
       searchQueryMovie();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -68,14 +98,16 @@ export default function MoviePage() {
 
   return (
     <div>
-      <form className={s.SearchForm} onSubmit={searchMovie}>
+      <form className={s.SearchForm} onSubmit={onSubmit}>
         <button type="submit" className={s.SearchForm_button}>
           <span className={s.button_label}></span>
           <FcSearch />
         </button>
 
         <input
-          value={searchParams.get('query' || '')}
+          value={
+            searchParams.get('query') === null ? '' : searchParams.get('query')
+          }
           onChange={saveQuery}
           className={s.SearchForm_input}
           type="text"
@@ -90,8 +122,11 @@ export default function MoviePage() {
           {foundMovie.results &&
             foundMovie.results.map(movie => {
               return (
-                // <Route path={pathname + search}>
-                <Link to={`${movie.id}`} key={movie.id}>
+                <Link
+                  to={`${movie.id}`}
+                  state={{ from: location }}
+                  key={movie.id}
+                >
                   <FilmsItem id={movie.id}>
                     {movie.poster_path ? (
                       <img src={imgBaseUrl + movie.poster_path} alt=""></img>
@@ -102,7 +137,6 @@ export default function MoviePage() {
                     <p>{movie.overview}</p>
                   </FilmsItem>
                 </Link>
-                ///* </Route> */
               );
             })}
         </FilmsList>
