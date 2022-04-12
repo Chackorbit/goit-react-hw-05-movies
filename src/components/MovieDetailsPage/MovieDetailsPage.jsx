@@ -9,7 +9,7 @@ import { useState, useEffect, Suspense } from 'react';
 import Cast from 'components/Cast/Cast';
 import Reviews from 'components/Reviews/Reviews';
 import GoBackBtn from '../GoBackBtn/GoBackBtn';
-
+import { fetchDetailsMovie } from '../Requests/Requests';
 export default function MovieDetailsPage(props) {
   const { movieId } = useParams();
   const [detailsFilm, setDetailsFilm] = useState([]);
@@ -18,22 +18,7 @@ export default function MovieDetailsPage(props) {
   const location = useLocation();
 
   useEffect(() => {
-    const fetchDetailsMovie = async () => {
-      const BASE_URL = 'https://api.themoviedb.org/3/';
-      const key = '39268a7cf0f5a62bddedb30e59a8c087';
-
-      const meta = new URLSearchParams({
-        api_key: key,
-      });
-
-      const url = `${BASE_URL}movie/${movieId}?${meta}&append_to_response=credits,reviews`;
-
-      const fetchMovie = await fetch(url);
-      const r = await fetchMovie.json();
-
-      return setDetailsFilm(r);
-    };
-    fetchDetailsMovie();
+    fetchDetailsMovie(movieId).then(r => setDetailsFilm(r));
   }, [movieId]);
 
   return (

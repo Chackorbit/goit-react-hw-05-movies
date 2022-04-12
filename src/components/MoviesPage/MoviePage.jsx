@@ -10,13 +10,13 @@ import {
 import s from './MoviePage.module.css';
 import Poster from 'img/instagram-g6f508c30b_640.png';
 import { FcSearch } from 'react-icons/fc';
+import { searchQueryMovie } from '../Requests/Requests';
 
 export default function MoviePage() {
   // eslint-disable-next-line no-unused-vars
   const [query, setQuery] = useState('');
   const [foundMovie, setFoundMovie] = useState([]);
   let [searchParams, setSearchParams] = useSearchParams();
-  // const location = useLocation();
   const location = useLocation();
 
   const imgBaseUrl = 'https://image.tmdb.org/t/p/w300';
@@ -50,30 +50,6 @@ export default function MoviePage() {
   //   // eslint-disable-next-line react-hooks/exhaustive-deps
   // }, [query, searchParams, setSearchParams]);
 
-  const searchQueryMovie = async () => {
-    const BASE_URL = 'https://api.themoviedb.org/3/';
-    const key = '39268a7cf0f5a62bddedb30e59a8c087';
-
-    const searchQuery = searchParams.get('query');
-    if (!searchQuery || searchQuery === '') return;
-
-    const query = new URLSearchParams(location.search).get('query') ?? '';
-
-    const meta = new URLSearchParams({
-      api_key: key,
-      query,
-      page: 1,
-      include_adult: false,
-    });
-
-    const url = `${BASE_URL}search/movie?${meta}`;
-
-    const fetchQueryMovie = await fetch(url);
-    const r = await fetchQueryMovie.json();
-
-    return setFoundMovie(r);
-  };
-
   const saveQuery = e => {
     setQuery(e.target.value);
     if (e.target.value === '') {
@@ -86,12 +62,17 @@ export default function MoviePage() {
   const onSubmit = e => {
     e.preventDefault();
 
-    searchQueryMovie();
+    const search = location.search;
+
+    searchQueryMovie(searchParams, search).then(r => setFoundMovie(r));
   };
 
   useEffect(() => {
     if (searchParams.get('query') != null) {
-      searchQueryMovie();
+      const searchQuery = searchParams.get('query');
+      const search = location.search;
+
+      searchQueryMovie(searchQuery, search).then(r => setFoundMovie(r));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
